@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用 JSX 指定子元素</title>
+    <script src="./build/react.js"></script>
+    <script src="./build/react-dom.js"></script>
+    <script src="./build/browser.min.js"></script>
+</head>
+<body>
+<div id="example"></div>
+<script type="text/babel">
+    const elem = <img src="img/download1-3.jpg" alt=""/>;
+
+    console.log(elem)
+
+    const elem2 = (
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+        </ul>
+    )
+
+    ReactDOM.render(
+        elem2,
+        document.getElementById("example")
+    )
+
+//    let a = ReactDOM.unmountComponentAtNode(document.getElementById("example"));
+//    console.log(a)
+//    var a = ReactDOM.findDOMNode(document.getElementById("example"));
+//    console.log(a)
+</script>
+</body>
+</html>

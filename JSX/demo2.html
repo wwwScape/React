@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>JSX中嵌入js的表达式</title>
+    <script src="./build/react.js"></script>
+    <script src="./build/react-dom.js"></script>
+    <script src="./build/browser.min.js"></script>
+</head>
+<body>
+<div id="example1"></div>
+<div id="example2"></div>
+<script type="text/babel">
+
+    const user = {
+        firstname:"John",
+        lastname:"Snow"
+    };
+
+    function formateName(user) {
+        return user.firstname +" "+ user.lastname;
+    }
+
+    const elem1 = (<h1>hello,{formateName(user)}</h1>);//使用括号可以避免分号自动插入
+
+    const elem2 = <h1>hello,{user.firstname}</h1>;
+
+    ReactDOM.render(
+        elem1,
+        document.getElementById("example1")
+    );
+
+    ReactDOM.render(
+        elem2,
+        document.getElementById("example2")
+    )
+</script>
+</body>
+</html>

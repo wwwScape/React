@@ -2,7 +2,9 @@
 
 JSX 是JavaScrip 的一种扩展语法。推荐在 React 中使用这种语法来描述 UI 信息。JSX 可能会让你想起某种模板语言，但是它具有 JavaScrip 的全部能力。
 
-可以将任何 JavaScript 表达式放在 JSX 中的大括号内。每个 React 元素都是一个真正的 JavaScript 对象，您可以将其存储在变量中或传递给程序。
+（1）可以将任何 JavaScript 表达式放在 JSX 中的大括号({ })内。每个 React 元素都是一个真正的 JavaScript 对象，您可以将其存储在变量中或传递给程序。
+
+（2）(JSX) 也是一个表达式，编译之后生成React元素，React元素就是一个真正的JS对象
 
 ## 使用
 

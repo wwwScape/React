@@ -235,11 +235,45 @@ React.createClass({对象}) 方法用于生成一个组件类
 把一个组件分为多个更小的组件。
 
 ## props是只读的（Properties简写）
-无论你用函数或类的方法来声明组件, 它都无法修改其自身 props
 
+无论你用函数或类的方法来声明组件, 它都无法修改其自身 props;
 
+所有 React 组件都必须是纯函数，并禁止修改其自身 props 。纯函数就是函数自己不会试图改变自己的输入
 
+	纯函数：
+	function sum(a, b) {
+	  return a + b;
+	}
+	
+	非纯函数：
+	function withdraw(account, amount) {
+	  account.total -= amount;
+	}
 
+当然， 应用 UI 总是动态的，并且随时有可能改变。 所以要介绍一个新的概念 state(状态) 。state 允许 React 组件在不违反上述规则的情况下, 根据用户操作, 网络响应, 或者其他随便什么东西, 来动态地改变其输出。
+
+## 状态（state）和声明周期
+
+### 状态state
+
+目前我们知道的更新ui的方法只有一种，调 ReactDOM.render() 方法来更新渲染的输出：
+
+	function tick() {
+	  const element = (
+	    <div>
+	      <h1>Hello, world!</h1>
+	      <h2>It is {new Date().toLocaleTimeString()}.</h2>
+	    </div>
+	  );
+	  ReactDOM.render(
+	    element,
+	    document.getElementById('root')
+	  );
+	}
+	
+	setInterval(tick, 1000);
+
+现在提供一种更合理的方法：state，它完全由组件自身控制，是一种局部状态
 
 ## this.props.children
 this.props 对象的属性与组件的属性一一对应，但是有一个例外，就是 this.props.children 属性。它表示组件的所有子节点  

@@ -29,7 +29,7 @@
 9. web App -> native App
 
 10. React 可以在浏览器运行，也可以在服务器运行
-11. 组件化开发 —— 封装起来具备独立功能的ui控件,重用
+11. 组件化开发 —— 封装起来具备独立功能的ui控件，代码的复用
 
 
 ## 安装
@@ -97,7 +97,7 @@ Chrome 和 Firefox 的 React Devtools extension 可让在浏览器的开发者�
 		  [callback]
 		)
 
-说明：渲染一个 React 元素到由 container 提供的 DOM 中，并且返回组件的一个 引用(reference) （或者对于 无状态组件 返回 null ）。如果 React 元素先前已经被渲染到了 container 中，那么将对其执行更新，并且对 DOM 只修改需要修改的地方，以反映最新的 React元素。(使用DOM diffing 算法来进行有效的更新)
+说明：渲染一个 React 元素到由 container 提供的 DOM 中，并且返回组件的一个 引用(reference) （或者对于 无状态组件 返回 null ）。如果 React 元素先前已经被渲染到了 container 中，那么将对其执行更新，并且对 DOM 只修改需要修改的地方，以反映最新的 React元素。(使用DOM diffing 算法来进行有效的更新，React 只更新必需要更新的部分，React DOM 会将元素及其子元素与之前版本逐一对比, 并只对有必要更新的 DOM 进行更新, 以达到 DOM 所需的状态。)
 
 ReactDOM.render() 是 React 的最基本方法，用于将模板转为 HTML 语言，并插入指定的 DOM 节点。
 
@@ -129,7 +129,7 @@ ReactDOM.render() 是 React 的最基本方法，用于将模板转为 HTML 语�
 
 从定义上来说， 组件就像JavaScript的函数。组件可以接收任意输入(称为"props")， 并返回 React 元素，用以描述屏幕显示内容。
 
-组件分为：函数式组件和类组件
+组件分为：函数式组件（Functional）和类组件（React.createClass()）
 
 	最简单的函数式组件就是定义一个javascript函数：
 	function Welcome(props) {
@@ -170,7 +170,31 @@ React.createClass({对象}) 方法用于生成一个组件类
 >    
 > 4. 添加组件属性，有一个地方需要注意，就是 class 属性需要写成 className ，for 属性需要写成 htmlFor ，这是因为 class 和 for 
 >    是 JavaScript 的保留字 
->    
+
+
+### 组件的渲染
+
+当 React 遇到一个代表用户自定义组件的元素时，它将 JSX 属性以一个单独对象的形式传递给相应的组件。 我们将其称为 "props" 对象。
+
+		function Welcome(props) {
+		  return <h1>Hello, {props.name}</h1>;
+		}
+		
+		const element = <Welcome name="Sara" />;
+		ReactDOM.render(
+		  element,
+		  document.getElementById('root')
+		);
+> 说明
+>  
+> 1. 我们调用了 ReactDOM.render() 方法并向其中传入了 <Welcome name="Sara" /> 元素。
+> 
+> 2. React 调用 Welcome 组件，并向其中传入了 {name: 'Sara'} 作为 props 对象。
+> 
+> 3. Welcome 组件返回 <h1>Hello, Sara</h1>。
+> 
+> 4. React DOM 迅速更新 DOM ，使其显示为 <h1>Hello, Sara</h1>。
+> 
 
 ## this.props.children
 this.props 对象的属性与组件的属性一一对应，但是有一个例外，就是 this.props.children 属性。它表示组件的所有子节点  

@@ -185,16 +185,61 @@ React.createClass({对象}) 方法用于生成一个组件类
 		  element,
 		  document.getElementById('root')
 		);
-> 说明
+
+> 说明：
 >  
 > 1. 我们调用了 ReactDOM.render() 方法并向其中传入了 <Welcome name="Sara" /> 元素。
 > 
 > 2. React 调用 Welcome 组件，并向其中传入了 {name: 'Sara'} 作为 props 对象。
 > 
-> 3. Welcome 组件返回 <h1>Hello, Sara</h1>。
+> 3. Welcome 组件返回 `<h1>Hello, Sara</h1>`。
 > 
-> 4. React DOM 迅速更新 DOM ，使其显示为 <h1>Hello, Sara</h1>。
+> 4. React DOM 迅速更新 DOM ，使其显示为 `<h1>Hello, Sara</h1>`。
 > 
+> 警告：
+> 
+> 组件名称总是以大写字母开始。
+> 
+> 举例来说, `<div />` 代表一个 DOM 标签，而 `<Welcome />` 则代表一个组件，并且需要在作用域中有一个 Welcome 组件。 
+
+### 构成组件
+
+组件可以在它们的输出中引用其它组件。这使得我们可以使用同样的组件来抽象到任意层级。一个按钮，一个表单，一个对话框，一个屏幕：在 React 应用中，所有这些都通常描述为组件。
+
+例如，我们可以创建一个 App 组件，并在其内部多次渲染 Welcome：
+
+	function Welcome(props) {
+	  return <h1>Hello, {props.name}</h1>;
+	}
+	
+	function App() {
+	  return (
+	    <div>
+	      <Welcome name="Sara" />
+	      <Welcome name="Cahal" />
+	      <Welcome name="Edite" />
+	    </div>
+	  );
+	}
+	
+	ReactDOM.render(
+	  <App />,
+	  document.getElementById('root')
+	);
+
+>警告：
+>
+> 组件必须返回一个单独的根元素。这就是为什么我们添加一个 `<div>` 来包含所有 `<Welcome />` 元素的原因。
+
+### 提取组件
+把一个组件分为多个更小的组件。
+
+## props是只读的（Properties简写）
+无论你用函数或类的方法来声明组件, 它都无法修改其自身 props
+
+
+
+
 
 ## this.props.children
 this.props 对象的属性与组件的属性一一对应，但是有一个例外，就是 this.props.children 属性。它表示组件的所有子节点  

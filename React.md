@@ -24,11 +24,12 @@
 
 7. 创建单页应用（SPA） —— single page application
 
-8. MVC框架
+8. MVC，MVVM框架
 
 9. web App -> native App
 
 10. React 可以在浏览器运行，也可以在服务器运行
+11. 组件化开发 —— 封装起来具备独立功能的ui控件,重用
 
 
 ## 安装
@@ -37,6 +38,9 @@
 		create-react-app my-app
 		cd my-app
 		npm start
+
+## Chrome 和 Firefox 的 React Devtools extension
+Chrome 和 Firefox 的 React Devtools extension 可让在浏览器的开发者工具中检查 React 组件树。允许检查任何组件树中的 props(属性) 和 state(状态) 
 
 ## 相关的js介绍
 1. react.js 是 React 的核心库，

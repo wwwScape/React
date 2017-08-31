@@ -131,39 +131,44 @@ ReactDOM.render() 是 React 的最基本方法，用于将模板转为 HTML 语�
 
 组件分为：函数式组件（Functional）和类组件（React.createClass()）
 
-	最简单的函数式组件就是定义一个javascript函数：
-	function Welcome(props) {
-	  return <h1>Hello, {props.name}</h1>;
-	}
+	(1)最简单的函数式组件就是定义一个javascript函数：
 
-	用一个 ES6 的 class 来定义一个组件:
+	<script type="text/babel">
+		function Welcome(props) {
+		  return <h1>Hello, {props.name}</h1>;
+		}
+	</script>
+
+	(2)用一个 ES6 的 class 来定义一个组件:
+
+	<script type="text/babel">
+		class Welcome extends React.Component {
+		  render() {
+		    return <h1>Hello, {this.props.name}</h1>;
+		  }
+		}
+	</script>
+
+	(3)React.createClass({对象}) 方法用于生成一个组件类:
+
+	<script type="text/babel">
+	  var HelloMessage = React.createClass({
+	    render: function() {
+	      return <h1>Hello {this.props.name}</h1>;
+	    }
+	  });
 	
-	class Welcome extends React.Component {
-	  render() {
-	    return <h1>Hello, {this.props.name}</h1>;
-	  }
-	}
-
-React.createClass({对象}) 方法用于生成一个组件类
-
-		<script type="text/babel">
-		  var HelloMessage = React.createClass({
-		    render: function() {
-		      return <h1>Hello {this.props.name}</h1>;
-		    }
-		  });
-		
-		  ReactDOM.render(
-		    <HelloMessage name="John" />,
-		    document.getElementById('example')
-		  );
-		</script>
+	  ReactDOM.render(
+	    <HelloMessage name="John" />,
+	    document.getElementById('example')
+	  );
+	</script>
 
 > 说明
 > 
-> 1. 组件类只能包含一个顶层标签，也是说return的模板最外层有且只能有一个html标签，否则会报错browser.min.js:39 Uncaught SyntaxError: embedded: Adjacent JSX elements must be wrapped in an enclosing tag 
+> 1. 组件类只能包含一个顶层标签，也就是说return的模板最外层有且只能有一个html标签，否则会报错browser.min.js:39 Uncaught SyntaxError: embedded: Adjacent JSX elements must be wrapped in an enclosing tag 
 > 
-> 2. 变量 HelloMessage 就是一个组件类。模板插入 <HelloMessage /> 时，会自动生成 HelloMessage 的一个实例（下文的"组件"都指组件类的实例）。所有组件类都必须有自己的 render 方法，用于输出组件。
+> 2. 变量 HelloMessage 就是一个组件类。模板插入 <HelloMessage /> 时，会自动生成 HelloMessage 的一个实例。所有组件类都必须有自己的 render 方法，用于输出组件。
 > 
 > 3. 组件的用法与原生的 HTML 标签完全一致，可以任意加入属性。比如 <HelloMessage name="John"> ，就是 HelloMessage 组件加入一个 
 >    name 属性，值为 John。组件的属性可以在组件类的 this.props 对象上获取，比如 name 属性就可以通过 this.props.name
@@ -176,15 +181,15 @@ React.createClass({对象}) 方法用于生成一个组件类
 
 当 React 遇到一个代表用户自定义组件的元素时，它将 JSX 属性以一个单独对象的形式传递给相应的组件。 我们将其称为 "props" 对象。
 
-		function Welcome(props) {
-		  return <h1>Hello, {props.name}</h1>;
-		}
-		
-		const element = <Welcome name="Sara" />;
-		ReactDOM.render(
-		  element,
-		  document.getElementById('root')
-		);
+	function Welcome(props) {
+	  return <h1>Hello, {props.name}</h1>;
+	}
+	
+	const element = <Welcome name="Sara" />;
+	ReactDOM.render(
+	  element,
+	  document.getElementById('root')
+	);
 
 > 说明：
 >  
@@ -252,7 +257,7 @@ React.createClass({对象}) 方法用于生成一个组件类
 
 当然， 应用 UI 总是动态的，并且随时有可能改变。 所以要介绍一个新的概念 state(状态) 。state 允许 React 组件在不违反上述规则的情况下, 根据用户操作, 网络响应, 或者其他随便什么东西, 来动态地改变其输出。
 
-## 状态（state）和声明周期
+## [状态（state）和生命周期](http://www.css88.com/react/docs/state-and-lifecycle.html)
 
 ### 状态state
 
@@ -274,6 +279,9 @@ React.createClass({对象}) 方法用于生成一个组件类
 	setInterval(tick, 1000);
 
 现在提供一种更合理的方法：state，它完全由组件自身控制，是一种局部状态
+
+
+
 
 ## this.props.children
 this.props 对象的属性与组件的属性一一对应，但是有一个例外，就是 this.props.children 属性。它表示组件的所有子节点  

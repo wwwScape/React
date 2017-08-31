@@ -1,0 +1,1 @@
+[React Native](http://reactnative.cn/docs/0.47/getting-started.html#content)

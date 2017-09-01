@@ -395,7 +395,7 @@ ReactDOM.render() 是 React 的最基本方法，用于将模板转为 HTML 语�
 	class Clock extends React.Component {
 	  constructor(props) {
 	    super(props);
-	    this.state = {date: new Date()};
+	    this.state = {date: new Date()};// 唯一可以分配 this.state 的地方
 	  }
 	
 	  componentDidMount() {
@@ -431,7 +431,42 @@ ReactDOM.render() 是 React 的最基本方法，用于将模板转为 HTML 语�
 	);
 
 
+### 正确地使用 State(状态)
 
+1. 不要直接修改 state(状态)，this.state.comment = 'Hello';这样修改不会重新渲染组件
+2.  setState() ，setState(comment:'hello')
+3.  唯一可以分配 this.state 的地方是构造函数。
+
+### state(状态) 更新可能是异步的
+
+React 为了优化性能，有可能会将多个 setState() 调用合并为一次更新。
+因为 this.props 和 this.state 可能是异步更新的，你不能依赖他们的值计算下一个state(状态)。
+
+	// 错误
+	this.setState({
+	  counter: this.state.counter + this.props.increment,
+	});
+
+解决：setState(fn) ，它接收一个函数，而不是一个对象。该函数接收前一个状态值作为第 1 个参数， 并将更新后的值作为第 2个参数，
+或者，这个函数将接收前一个状态作为第一个参数，应用更新时的 props 作为第二个参数
+	
+	//ES6箭头函数
+	this.setState((prevState, props) => ({
+	  counter: prevState.counter + props.increment
+	}));
+
+	//ES5
+	this.setState(function(prevState, props) {
+	  return {
+	    counter: prevState.counter + props.increment
+	  };
+	});
+
+### state(状态)更新会被合并
+
+当你调用 setState()， React 将合并你提供的对象到当前的状态中。
+
+## 数据向下流动
 
 
 

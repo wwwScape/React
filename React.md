@@ -278,7 +278,161 @@ ReactDOM.render() 是 React 的最基本方法，用于将模板转为 HTML 语�
 	
 	setInterval(tick, 1000);
 
-现在提供一种更合理的方法：state，它完全由组件自身控制，是一种局部状态
+现在提供一种更合理的方法：state，它完全由组件自身控制，是一种局部状态,state 和 props 类似，但是它是私有的，并且由组件本身完全控制。
+
+### 把函数式组件转化为类组件
+
+	定时器，函数：
+	
+	function tick() {
+	  const element = (
+	    <div>
+	      <h1>Hello, world!</h1>
+	      <h2>It is {new Date().toLocaleTimeString()}.</h2>
+	    </div>
+	  );
+	  ReactDOM.render(
+	    element,
+	    document.getElementById('root')
+	  );
+	}
+	
+	setInterval(tick, 1000);
+
+	定时器，函数组件：
+
+	function Clock(props) {
+	  return (
+	    <div>
+	      <h1>Hello, world!</h1>
+	      <h2>It is {props.date.toLocaleTimeString()}.</h2>
+	    </div>
+	  );
+	}
+	
+	function tick() {
+	  ReactDOM.render(
+	    <Clock date={new Date()} />,
+	    document.getElementById('root')
+	  );
+	}
+	
+	setInterval(tick, 1000);
+
+
+
+	定时器函数转化为类组件（还未添加state和生命周期钩子）：
+	
+	class Clock extends React.Component {
+	  render() {
+	    return (
+	      <div>
+	        <h1>Hello, world!</h1>
+	        <h2>It is {this.props.date.toLocaleTimeString()}.</h2>
+	      </div>
+	    );
+	  }
+	}
+
+> 转化的步骤：
+> 
+> 1. 创建一个继承自 React.Component 类的 ES6 class 同名类。
+> 
+> 2. 添加一个名为 render() 的空方法。
+> 
+> 3. 把原函数中的所有内容移至 render() 中。
+> 
+> 4. 在 render() 方法中使用 this.props 替代 props。
+> 
+> 5. 删除保留的空函数声明。
+> 
+>说明：
+>
+>类允许我们在其中添加本地状态(state)和生命周期钩子。 
+
+### 在类组件中添加本地状态(state)
+
+把date从属性(props) 改为 状态(state)分三步：
+
+1) 替换 render() 方法中的 this.props.date 为 this.state.date
+
+2）添加一个 类构造函数(class constructor) 初始化 this.state
+
+3) 移除 <Clock /> 元素中的 date 属性
+	
+	结果：
+	class Clock extends React.Component {
+	  constructor(props) {
+	    super(props);
+	    this.state = {date: new Date()};
+	  }
+	
+	  render() {
+	    return (
+	      <div>
+	        <h1>Hello, world!</h1>
+	        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+	      </div>
+	    );
+	  }
+	}
+	
+	ReactDOM.render(
+	  <Clock />,
+	  document.getElementById('root')
+	);
+
+### 在类中添加生命周期方法
+
+挂载：mounting（第一次渲染到DOM之后）
+
+卸载：unmounting（DOM 被销毁时）
+
+当组件挂载和卸载时，我们可以在组件类上声明特殊的方法，称之为生命周期钩子，如componentDidMount() {}，componentWillUnmount() {}；componentDidMount在组件输出被渲染到 DOM 之后运行，
+
+使用 this.setState() 来来周期性地更新组件本地状态
+
+	class Clock extends React.Component {
+	  constructor(props) {
+	    super(props);
+	    this.state = {date: new Date()};
+	  }
+	
+	  componentDidMount() {
+	    this.timerID = setInterval(
+	      () => this.tick(),
+	      1000
+	    );
+	  }
+	
+	  componentWillUnmount() {
+	    clearInterval(this.timerID);
+	  }
+	
+	  tick() {
+	    this.setState({
+	      date: new Date()
+	    });
+	  }
+	
+	  render() {
+	    return (
+	      <div>
+	        <h1>Hello, world!</h1>
+	        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+	      </div>
+	    );
+	  }
+	}
+	
+	ReactDOM.render(
+	  <Clock />,
+	  document.getElementById('root')
+	);
+
+
+
+
 
 
 

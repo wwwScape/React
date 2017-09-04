@@ -472,6 +472,7 @@ React 为了优化性能，有可能会将多个 setState() 调用合并为一�
 
 
 
+
 ## this.props.children
 this.props 对象的属性与组件的属性一一对应，但是有一个例外，就是 this.props.children 属性。它表示组件的所有子节点  
 

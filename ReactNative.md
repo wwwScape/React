@@ -1,5 +1,7 @@
 ## 移动端开发相关资源
 
+### [React 设计思想](https://github.com/react-guide/react-basic)
+
 ### [React Native](http://reactnative.cn/docs/0.47/getting-started.html#content)
 
 ### [axios发去HTTP请求](https://www.kancloud.cn/yunye/axios/234845)
@@ -11,6 +13,10 @@
 ### [element-react](https://eleme.github.io/element-react/#/zh-CN/quick-start)--饿了吗团队
 
 ### [相关项目](https://github.com/DigAg/digag-pc-react/issues)
+
+### [Redux](http://www.redux.org.cn/index.html)
+
+### [import的几种使用情况](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/import)
 
 ### [ant.design](https://ant.design/docs/react/introduce-cn)--蚂蚁金服
 
@@ -54,6 +60,17 @@ Flex 容器（flex container）：display：flex
 	
 	* align-self：允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch
 		* 该属性可能取6个值，除了auto，其他都与align-items属性完全一致。
+
+
+## React全家桶
+
+react
+
+react-router
+
+redux
+
+fetch实现ajax（或者用axios）
 
 
 

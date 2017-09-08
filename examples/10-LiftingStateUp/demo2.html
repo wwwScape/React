@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="../build/JSXTransformer.js"></script>
+    <script src="../build/browser.min.js"></script>
+</head>
+<body>
+<h4>两个温度输入框，需要保持输入其中一个，另一个同步变化，目前并为实现</h4>
+<div id="root"></div>
+
+<script type="text/babel">
+    const scaleNames = {
+        c: 'Celsius',
+        f: 'Fahrenheit'
+    };
+
+    class TemperatureInput extends React.Component {
+
+        constructor(props) {
+            super(props);
+            this.handleChange = this.handleChange.bind(this);
+            this.state = {temperature: ''};
+        }
+
+        handleChange(e) {
+            this.setState({temperature: e.target.value});
+        }
+
+        render() {
+            const scale = this.props.scale;
+            return (
+                    <fieldset>
+                        <legend>Enter temperature in {scaleNames[scale]}:</legend>
+                        <input value={this.state.temperature} onChange={this.handleChange} />
+                    </fieldset>
+            );
+        }
+    }
+
+    class Calculator extends React.Component {
+        render() {
+            return (
+                    <div>
+                        <TemperatureInput scale="c" />
+                        <TemperatureInput scale="f" />
+                    </div>
+            );
+        }
+    }
+
+    ReactDOM.render(
+        <Calculator/>,
+        document.getElementById("root"));
+</script>
+</body>
+</html>

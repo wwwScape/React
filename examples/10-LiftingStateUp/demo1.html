@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="../build/JSXTransformer.js"></script>
+    <script src="../build/browser.min.js"></script>
+</head>
+<body>
+<h4>输入水温判断是水否沸腾</h4>
+<div id="root"></div>
+
+<script type="text/babel">
+
+    // 定义一个类组件，设置onChange事件监听input的变化
+    class Calculator extends React.Component {
+
+        constructor(props) {
+            super(props);
+            this.handleChange = this.handleChange.bind(this);
+            this.state = {temperature: ''};//初始化input的值 this.state.temperature
+        }
+
+        handleChange(e) {
+            this.setState({temperature: e.target.value});
+        }
+
+        render() {
+            return (
+                <fieldset>
+                    <legend>Enter temperature in Celsius:</legend>
+                    <input name="userInput" type="text" value={this.state.temperature} onChange={this.handleChange} />
+                    <BoilingVerdict celsius={parseFloat(this.state.temperature)} />
+                </fieldset>
+            );
+        }
+    }
+
+    // 定义一个函数组件，根据input的变化，利用属性celsius来判断水温是否沸腾
+    function BoilingVerdict(props) {
+        if (props.celsius >= 100) {
+            return <p>The water would boil.</p>;
+        }
+        return <p>The water would not boil.</p>;
+    }
+
+    ReactDOM.render(
+        <Calculator />,
+        document.getElementById("root"));
+
+</script>
+</body>
+</html>

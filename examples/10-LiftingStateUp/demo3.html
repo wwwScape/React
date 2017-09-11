@@ -14,13 +14,20 @@
 
 <script type="text/babel">
 
-    // 定义一个变量，作为温度的单位
+    // 定义一个对象，作为温度的单位
     const scaleNames = {
         c: 'Celsius',
         f: 'Fahrenheit'
     };
 
-    // 定义类，温度输入
+    /*
+     1、无状态state
+     2、三个属性props：
+        (1) template
+        (2) scale
+        (3) onTemperatureChange():由父组件Calculator提供
+    */
+
     class TemperatureInput extends React.Component {
         constructor(props) {
             super(props);
@@ -43,7 +50,12 @@
         }
     }
 
-    // 定义 计算温度 的类，
+    /*
+     1、两个状态state:
+        (1) template
+        (2) scale
+     2、无属性props
+    */
     class Calculator extends React.Component {
         constructor(props) {
             super(props);
@@ -68,23 +80,16 @@
 
             return (
                     <div>
-                        <TemperatureInput
-                                scale="c"
-                                temperature={celsius}
-                                onTemperatureChange={this.handleCelsiusChange} />
-                        <TemperatureInput
-                                scale="f"
-                                temperature={fahrenheit}
-                                onTemperatureChange={this.handleFahrenheitChange} />
-                        <BoilingVerdict
-                                celsius={parseFloat(celsius)} />
+                        <TemperatureInput scale="c" temperature={celsius} onTemperatureChange={this.handleCelsiusChange} />
+                        <TemperatureInput scale="f" temperature={fahrenheit} onTemperatureChange={this.handleFahrenheitChange} />
+                        <BoilingVerdict celsius={parseFloat(celsius)} />
                     </div>
             );
         }
     }
 
-    //两个输入之间进行相互转换。对于无效的 temperature 值，它返回一个空字符串，输出结果保留3位小数
-    function tryConvert(temperature, convert) {
+    // 两个输入之间进行相互转换。对于无效的 temperature 值，它返回一个空字符串，输出结果保留3位小数
+    function tryConvert(temperature, convert) {//传入两个参数，一个温度，一个将该温度转换为另一种温度的方法
         const input = parseFloat(temperature);
         if (Number.isNaN(input)) {
             return '';
@@ -113,8 +118,9 @@
     }
 
     ReactDOM.render(
-            <Calculator/>,
-        document.getElementById("root"));
+        <Calculator/>,
+        document.getElementById("root")
+    );
 </script>
 </body>
 </html>

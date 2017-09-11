@@ -20,9 +20,9 @@
         constructor(props) {
             super(props);
             this.handleChange = this.handleChange.bind(this);
-            this.state = {temperature: ''};//初始化input的值 this.state.temperature
+            this.state = {temperature: ''}; // temperature作用：1、初始化input的值 2、初始化BoilingVerdict中的判断
         }
-
+        // 当输入框中的值改变时，重新设置状态state中的temperature
         handleChange(e) {
             this.setState({temperature: e.target.value});
         }

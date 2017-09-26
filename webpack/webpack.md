@@ -75,15 +75,12 @@ webpack.config.js文件：
 
     --inline，加载模式
 
-6. 在命令行中输入webpack-dev-server太麻烦，可以在package.json中的scripts字段中，
+6. 在命令行中输入webpack-dev-server太麻烦，可以在package.json中的scripts字段中，可以自定义命令
 
-	在package.json文件中，在scripts的字段下，可以自定义命令，
-	
 	如："build":"webpack-dev-server --hot --inline",
 	这时，如果想运行webpack-dev-server --hot --inline这条命令，在命令行中写：npm run build;
 	
 	或者，使用"start":"webpack-dev-server --hot --inline",这时在命令行中写：npm start；
-
 
 ### 入口 entry：string，array，object
 
@@ -110,7 +107,7 @@ webpack.config.js文件：
 
   > 说明:使用偷窥符[],获取entry下的key值，作为打包成的对应的js的文件名
 
-（3）版本号的问题：解决浏览器的缓存问题，只要文件不更改，版本号就不更改，根据文件内容更改版本号
+（3）版本号的问题：解决浏览器的缓存问题，只要文件不更改，版本号就不更改，根据文件内容更改版本号（需要重新打包）
 
 	output的配置--filename："[name]_[hash].js"：会给每个js文件后面加上 _hash 后缀，问题是，每个js的后缀都一样，而且，在文件引入的时候也存在问题
 
@@ -174,12 +171,107 @@ webpack.config.js文件：
 
 ### css-loader
 
-css-loader:负责把css编译成js
+顺序如下：
 
-style-loader:负责把css抽离出来放到html上
+（1）sass-loader:编译scss文件成为css，依赖于node-sass,所以还需要装，cnpm i node-sass -D （使用cnpm要快）
+	
+（2）css-loader:负责把css编译成js
+
+（3）style-loader:负责把css抽离出来放到html上，添加样式，在生成的html中并没有引入css样式表，但是打开浏览器时发现，样式已经被添加未内部样式<style\>...</style\>
 
 
 
+1. 引入loader
+
+		// 引入loader
+		
+		module:{
+		    rules:[
+		        // css loader
+		        {
+		            test:/\.css$/,
+		            loader:"style-loader!css-loader",
+		        }
+		    ]
+		}
+
+
+		// 编译sass
+	    module:{
+	        rules:[
+	            // css loader
+	            {
+	                test:/\.scss$/,
+	                use:[
+	                    {loader:"style-loader"},
+	                    {loader:"css-loader"},
+	                    {loader:"sass-loader"}
+	                ]
+	
+	            }
+	        ]
+	    }
+
+		或者使用：
+		  module:{
+		        rules:[
+		            {
+		                test:/\.scss$/,
+		                loader:"style-loader!css-loader!sass-loader"
+		
+		            }
+		        ]
+		    },
+
+> 注意：以上的代码，并不能抽离css，将其放在一个css文件中，而是写在内部样式里面的
+
+
+2. 抽离css，使用插件：npm i extract-text-webpack-plugin -D
+
+	var extractTextPlugin = require("extract-text-webpack-plugin");
+	
+	module.exports = {
+	
+	    // 入口
+	    entry: "./src/app.js",
+	
+	    // 出口
+	    output:{
+	        path:__dirname+"/build",// 必须是绝对路径
+	        filename:"app_[hash].js"
+	        // filename:"[name]_[chunkhash].js"
+	    },
+	
+	    // 引入loader
+	    module:{
+	        rules:[
+	            // css loader
+	            {
+	                test:/\.scss$/,
+	                loader:extractTextPlugin.extract({
+
+                    fallback:"style-loader",// 反馈
+                    use:"css-loader!sass-loader",// 用sass-loader编译,用css-loader转换
+
+              		})
+	
+	            }
+	        ]
+	    },
+
+	    // 插件
+	    plugins:[
+	        new extractTextPlugin({
+	            filename:'[name].[hash].css',
+	            allChunks:true,
+	            disable:false
+	        })
+	    ]
+	}
+
+> 说明：css样式表生成的路径，在output的path路径中，index.html会自动的引入生成的css文件
+> 
+> 问题：抽离之后，更改css不能自动刷新了，因为css没有了监听
 
 ## nodejs相关的内容：
 

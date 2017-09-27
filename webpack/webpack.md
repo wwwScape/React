@@ -1,3 +1,4 @@
+:
 ## [Webpack](http://www.css88.com/doc/webpack/)
 
 ![什么是webpack](./img/what-is-webpack.png)
@@ -226,57 +227,160 @@ webpack.config.js文件：
 > 注意：以上的代码，并不能抽离css，将其放在一个css文件中，而是写在内部样式里面的
 
 
-2. 抽离css，使用插件：npm i extract-text-webpack-plugin -D
+2. 抽离css(将css从js中抽离出来，并放在指定的css文件中)，
 
-	var extractTextPlugin = require("extract-text-webpack-plugin");
-	
-	module.exports = {
-	
-	    // 入口
-	    entry: "./src/app.js",
-	
-	    // 出口
-	    output:{
-	        path:__dirname+"/build",// 必须是绝对路径
-	        filename:"app_[hash].js"
-	        // filename:"[name]_[chunkhash].js"
-	    },
-	
-	    // 引入loader
-	    module:{
-	        rules:[
-	            // css loader
-	            {
-	                test:/\.scss$/,
-	                loader:extractTextPlugin.extract({
+	使用插件：npm i extract-text-webpack-plugin -D
 
-                    fallback:"style-loader",// 反馈
-                    use:"css-loader!sass-loader",// 用sass-loader编译,用css-loader转换
-
-              		})
+		var extractTextPlugin = require("extract-text-webpack-plugin");
+		
+		module.exports = {
+		
+		    // 入口
+		    entry: "./src/app.js",
+		
+		    // 出口
+		    output:{
+		        path:__dirname+"/build",// 必须是绝对路径
+		        filename:"app_[hash].js"
+		        // filename:"[name]_[chunkhash].js"
+		    },
+		
+		    // 引入loader
+		    module:{
+		        rules:[
+		            // css loader
+		            {
+		                test:/\.scss$/,
+		                loader:extractTextPlugin.extract({
 	
-	            }
-	        ]
-	    },
-
-	    // 插件
-	    plugins:[
-	        new extractTextPlugin({
-	            filename:'[name].[hash].css',
-	            allChunks:true,
-	            disable:false
-	        })
-	    ]
-	}
+	                    fallback:"style-loader",// 反馈
+	                    use:"css-loader!sass-loader",// 用sass-loader编译,用css-loader转换
+	
+	              		})
+		
+		            }
+		        ]
+		    },
+	
+		    // 插件
+		    plugins:[
+		        new extractTextPlugin({
+		            filename:'[name].[hash].css',
+		            allChunks:true,
+		            disable:false
+		        })
+		    ]
+		}
 
 > 说明：css样式表生成的路径，在output的path路径中，index.html会自动的引入生成的css文件
 > 
 > 问题：抽离之后，更改css不能自动刷新了，因为css没有了监听
+
+
+### 合并压缩js
+
+使用webpack自带的插件
+
+	var webpack = require('webpack');
+	module.exports = {
+	
+	    // 插件
+	    plugins:[
+	        new webpack.optimize.UglifyJsPlugin({// 压缩js
+	            compress:{
+	                warnings:false//不提示警告
+	            },
+	            output:{
+	                comments:false//注释删除
+	            }
+	        })
+	    ],
+	}
+
+### 配置babel，编译es6
+
+一次引入babel相关的依赖：npm i babel-core babel-loader babel-preset-es2015 babel-preset-react -D
+
+babel-core：babel的内核
+
+babel-loader：
+
+babel-preset-es2015：
+
+	module.exports = {
+	
+	    module:{
+	        rules:[
+	            {
+	                test:/\.js$/,
+	                loader:"babel-loader",		//	引入babel-loader
+	                exclude:/node_modules/      //	不编译node_modules文件夹下的js
+	            }
+	
+	        ]
+	    }
+	
+	}
+
+
+### mock数据，假数据
+
+使用ajax请求json数据的问题：url需要更改
+
+本地是使用webpack，线上的使用ng，反向代理
+
+json-server工具，专门用来搭建虚拟服务器，可以带到生产环境中，restful服务器
+
+安装：npm install -g json-server
+
+使用：命令行中输入：json-server + mock.js(mock配置) -p 9000 -w
+
+使用postman扩展程序，会自动在本地安装postman，而不是作为浏览器的插件使用，依赖于json-server
+
+扩展程序：HostAdmin App
+
+开源接口：豆瓣api
+
+请求数据：fetch，不用jquery的ajax
+
+    fetch("/api/in_theaters").then(function(response) {
+            return response.json();
+        }).then(function(data) {
+            console.log(data);
+        }).catch(function(e) {
+            console.log("Oops, error");
+        });
+
+	fetch里面使用的是开发环境的地址，从来不需要改，在切换测试的json文件和开发的地址
+
+请求地址的处理：使用devServer的proxy属性
+	
+	module.exports = {
+	
+	    // 启动服务
+	    devServer:{
+	        contentBase:__dirname+"/build", //index.html的所在路径(根目录)，推荐使用绝对路径
+	        port:8100,
+	        proxy:{ // 配置代理，解决mock数据的问题,遇到 /api，转到http://localhost:9000/in_theaters
+	            '/api':{
+	                target:"http://localhost:9000",
+	                pathRewrite:{"^/api" : ""} // 转发的时候，会把 /api 变为 空字符串
+	            }
+	        }
+	    },
+	
+	}
+
+### 外部文件 externals
+
+
+
 
 ## nodejs相关的内容：
 
 1. 使用require()来引入模块
 2. __dirname，属于全局变量， 表示当前执行脚本所在的目录。
 3. path模块：提供了一些用于处理文件路径的小工具
-4. path.resolve([from ...], to)将 to 参数解析为绝对路径。
+4. path.resolve([from ...], to)将 to 参数解析
+5. 为绝对路径。
 

@@ -62,15 +62,5 @@ Flex 容器（flex container）：display：flex
 		* 该属性可能取6个值，除了auto，其他都与align-items属性完全一致。
 
 
-## React全家桶
-
-react
-
-react-router
-
-redux
-
-fetch实现ajax（或者用axios）
-
 
 
